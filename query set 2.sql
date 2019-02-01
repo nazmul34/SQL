@@ -55,7 +55,7 @@ WHERE City.CountryCode = Country.Code AND Continent = 'Africa' ;
 ----------------------------------------------------------------------------------------------------------
 /*
 The GROUP BY statement is often used with aggregate functions (COUNT, MAX, MIN, SUM, AVG) to group the 
-result-set by one or more columns.when multiple column is selected using GROUP BY is must.
+result-set by one or more columns.when multiple column is selected (in join) then using GROUP BY is must.
 
 Floor Round a number downward to its nearest integer. Ceil Round a number upward to its nearest integer.
 Round Round a number to the nearest integer.
@@ -71,5 +71,10 @@ Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
 select COUNTRY.Continent,floor(avg(CITY.Population)) from city join country on CITY.CountryCode=country.code
 group by COUNTRY.Continent;
 
-
+/*
+7
+Given the CITY and COUNTRY tables, query the sum of the populations of all cities where the CONTINENT is 'Asia'.
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+*/
+select sum(city.population) from city join country on CITY.CountryCode=COUNTRY.Code where CONTINENT ='asia';
 
