@@ -48,3 +48,13 @@ when N in (select P from BST) then 'Inner'
 else 'Leaf'
 end
 from BST order by N;
+
+
+/*
+3.
+https://www.w3schools.com/sql/sql_foreignkey.asp
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+
+The FOREIGN KEY constraint also prevents invalid data from being inserted into the foreign key column, because it 
+has to be one of the values contained in the table it points to.
+*/
