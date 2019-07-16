@@ -14,7 +14,6 @@ ALTER TABLE Persons alter column LastName varchar(40) NOT NULL
 
 
 ---Creating Primary Key
-
 ALTER TABLE Persons
 ADD PRIMARY KEY (PersonID);
 --drop this primary key
@@ -35,8 +34,10 @@ ADD CONSTRAINT df_date
 DEFAULT getdate() FOR DateOfBirth;
 
 --Creating a View
+go
 create view [value] as
-select PersonId,FirstName from Persons ;
+select PersonId,FirstName from Persons;
+go
 
 select * from [value];
 
