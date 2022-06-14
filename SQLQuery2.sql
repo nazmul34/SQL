@@ -19,8 +19,26 @@ select * from Orders join Customer on Orders.CustomerID=Customer.CustomerID join
 --Tutorial
 --https://www.youtube.com/watch?v=FKSSOpQe5Jc&list=PL08903FB7ACA1C2FB&index=11
 
+create table Employee
+(
+Id int identity ,
+EmployeeName varchar(20),
+Gender varchar(20),
+Salary int,
+CityName varchar(20)
+)
 
-insert into Employee(EmployeeName,Gender,Salary,CityName) values('Russell','Male',8800,'London');
+
+insert into Employee values ('tom','male',4000,'london')
+insert into Employee values ('pam','female',3000,'newyork')
+insert into Employee values ('john','male',3500,'london')
+insert into Employee values ('sam','male',4500,'london')
+insert into Employee values ('tod','male',2800,'sydney')
+insert into Employee values ('ben','male',7000,'newyork')
+insert into Employee values ('sara','female',4800,'sydney')
+insert into Employee values ('valarie','female',5500,'newyork')
+insert into Employee values ('james','male',6500,'london')
+insert into Employee values ('russel','male',8800,'london')
 
 select * from Employee; 
 
