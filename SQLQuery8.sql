@@ -1,4 +1,5 @@
--- In this sql we will learn about, Derived tables and common table expressions (CTE's). We will also explore the differences between Views, Table Variable, Local and Global Temp Tables, 
+-- In this sql we will learn about, Derived tables and common table expressions (CTE's). We will also explore the differences between Views, Table Variable, 
+-- Local and Global Temp Tables, 
 -- Derived tables and common table expressions.
 
 -- Let's create the required Employee and Department tables, that we will be using for this demo.
