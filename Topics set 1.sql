@@ -131,3 +131,92 @@ CREATE TABLE Authors
 -- use of format file in importing to a table
 -- bcp w3schools.dbo.shipper format null -f D:\training\SQL\test_files\ship.fmt -c -T -S NAZMULISLAMLAP\MSSQLSERVER01
 -- bcp w3schools.dbo.shipper in D:\training\SQL\test_files\ship1.csv -f D:\training\SQL\test_files\ship.fmt -t "," -T -S NAZMULISLAMLAP\MSSQLSERVER01
+
+
+-- Grouping sets
+-- Below two queries results, but grouping sets is faster in some cases
+
+-- 1
+SELECT brand, category, SUM (sales) FROM sales.sales_summary
+GROUP BY
+    GROUPING SETS (
+        (brand, category),
+        (brand),
+        (category),
+        ()
+)
+ORDER BY brand, category;
+
+--2
+SELECT brand, category, SUM (sales) sales FROM sales_summary
+GROUP BY brand, category
+
+UNION ALL
+
+SELECT brand, NULL, SUM (sales) sales FROM sales_summary
+GROUP BY brand
+
+UNION ALL
+
+SELECT NULL, category, SUM (sales) sales FROM sales_summary
+GROUP BY category
+
+UNION ALL
+
+SELECT NULL, NULL, SUM (sales) FROM sales_summary
+
+ORDER BY brand, category;
+
+
+-- UNION vs. UNION ALL
+-- By default, the UNION operator removes all duplicate rows from the result sets. However, if you want to retain the duplicate rows, 
+-- you need to specify the ALL keyword is explicitly
+
+SELECT first_name, last_name FROM staffs
+UNION
+SELECT first_name, last_name FROM customers
+
+
+-- INTERSECT
+-- The SQL Server INTERSECT combines result sets of two or more queries and returns distinct rows that are output by both queries.
+-- In some general cases we acive this kind of results by inner join, intersect is helpful when joining is not easy
+
+SELECT city FROM customers
+INTERSECT
+SELECT city FROM stores;
+
+
+-- EXCEPT
+-- The SQL Server EXCEPT compares the result sets of two queries and returns the distinct rows from the first query that are not output by the second query.
+-- In some general cases we acive this kind of results by left join, EXCEPT is helpful when joining is not easy
+
+SELECT city FROM customers
+EXCEPT
+SELECT city FROM stores;
+
+
+-- MERGE
+-- Suppose, you have two table called source and target tables, and you need to update the target table based on the values matched from the source table. There are three cases:
+-- 1. The source table has some rows that do not exist in the target table. In this case, you need to insert rows that are in the source table into the target table.
+-- 2. The target table has some rows that do not exist in the source table. In this case, you need to delete rows from the target table.
+-- 3. The source table has some rows with the same keys as the rows in the target table. However, these rows have different values in the non-key columns. 
+--    In this case, you need to update the rows in the target table with the values coming from the source table.
+
+MERGE sales.category t 
+    USING sales.category_staging s
+ON (s.category_id = t.category_id)
+WHEN MATCHED
+    THEN UPDATE SET 
+        t.category_name = s.category_name,
+        t.amount = s.amount
+WHEN NOT MATCHED BY TARGET 
+    THEN INSERT (category_id, category_name, amount)
+         VALUES (s.category_id, s.category_name, s.amount)
+WHEN NOT MATCHED BY SOURCE 
+    THEN DELETE;
+
+
+-- PIVOT
+-- SQL Server PIVOT operator rotates a table-valued expression. It turns the unique values in one column into multiple columns in the output and performs aggregations on any remaining column values.
+-- Detais in: https://www.sqlservertutorial.net/sql-server-basics/sql-server-pivot/
+-- This topics is quite tough, if we desperate need this feature, ony then we can learn the coding, otherwise just khow the use case of PIVOT.
