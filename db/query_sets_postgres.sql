@@ -29,8 +29,13 @@ select distinct CITY from STATION where mod(id,2)=0;
 select count (city) - count(distinct city) from station;
 
 /* 7 - shortest and longest CITY name */
+explain analyze
 select CITY,LENGTH(CITY) from STATION order by Length(CITY) asc, CITY asc limit 1;
 select CITY,LENGTH(CITY) from STATION order by Length(CITY) desc, CITY asc limit 1;
+
+explain analyze
+select city, LENGTH(city) from station where length(city)=(select max(length(city)) from STATION)
+
 
 /* 8 - CITY names starting with a vowel
    [PG] MySQL REGEXP -> Postgres  ~*  (case-insensitive regex match).
@@ -125,6 +130,12 @@ select round(LONG_W,4) from STATION where LAT_N=(select min(LAT_N) from station 
    [PG] REPLACE() is text-only in Postgres and AVG() is numeric-only, so the
         value has to be cast out to text and back: salary::text ... ::numeric. */
 SELECT CEIL(AVG(Salary) - AVG(REPLACE(Salary::text, '0', '')::numeric)) FROM EMPLOYEES;
+SELECT CEILING(
+         AVG(Salary)
+         - AVG(CAST(REPLACE(CAST(Salary AS VARCHAR(20)), '0', '') AS DECIMAL(20,4)))
+       )
+FROM EMPLOYEES;
+
 
 /* 4 - maximum total earnings and how many employees hit it */
 select (months*salary) as taka,count(*) from Employee group by taka order by taka desc limit 1;
