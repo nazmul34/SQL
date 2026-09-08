@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sql-practice-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sqluser
+      POSTGRES_PASSWORD: sqlpass
+      POSTGRES_DB: sqlpractice
+    ports:
+      - "5432:5432"
+    volumes:
+      # Scripts in this folder run automatically, in name order, on first start.
+      - ./init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sqluser -d sqlpractice"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
